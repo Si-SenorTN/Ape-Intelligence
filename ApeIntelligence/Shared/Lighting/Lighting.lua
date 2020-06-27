@@ -49,12 +49,6 @@ if RunService:IsClient() then
 		self.DepthOfFieldEffect.Enabled = Boolean
 	end
 
-
-	function ClientLighting:GetAccurateTimeOfDay()
-		
-		
-	end
-
 	return ClientLighting
 elseif RunService:IsServer() then
 	local ServerLighting = {}
