@@ -10,4 +10,27 @@
 Ape Intelligence is vast evergrowing module library I use in my everyday workflow. Most of these moduels are independant, however, some of them require more knowledge of specific use cases in order to understand them.
 Everyone is free to take and use the source code of these modules as they like, I hope you enjoy.
 
+## Usage
+I've provided an rbxm file in the main directory. It is important you reparent/ungroup the contents in their respective services
+
+---
+<h3 align="center"> General usage is as follows </h3>
+
+- Redefine the roblox global requrie
+```lua
+local requrie = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
+```
+
+- Now you are able to requrie modules by name
+```lua
+local Maid = require("Maid")
+```
+---
+Further documentation is located in the main ApeIntelligence module
+
+## Business Inquiries
+**Email** (senorsucksatdeveloping123@gmail.com)
+
+**Discord** (Si_SenorTN#0232)
+
 > NOTE: This repository is mainly used as an archive, rather than a resource.
