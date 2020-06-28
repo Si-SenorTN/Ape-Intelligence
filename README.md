@@ -28,12 +28,10 @@ I've provided an rbxm file in the main directory. It is important you reparent/u
 ```lua
 local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
 ```
-
 - Now you are able to requrie modules by name
 ```lua
 local Maid = require("Maid")
 ```
-
  - Or by directly indexing it
  ```lua
  local Snackbar = require.Snackbar
