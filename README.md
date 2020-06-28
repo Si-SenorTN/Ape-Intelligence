@@ -3,6 +3,14 @@
 <div align="center">
 	<p align="center">
 		Module library inpired by <a href="https://github.com/Quenty"> Quenty's </a> <a href="https://github.com/Quenty/NevermoreEngine"> Nevermore Engine </a>
+		<br>
+		<em>
+			You may want to look at
+			<a href="https://github.com/Quenty/NevermoreEngine/blob/version2/loader/ReplicatedStorage/Nevermore/README.md">
+				this	
+			</a>
+			as well
+		</em>
 	</p>
 </div>
 
