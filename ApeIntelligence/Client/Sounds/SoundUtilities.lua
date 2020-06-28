@@ -23,13 +23,13 @@ function Sounds.new(SoundLibrary, LibraryName)
 
 	local self = {}
 
-	self.Library = SoundLibrary
+	self.SoundTable = SoundLibrary
 	self.SoundGroup = Instance.new("SoundGroup")
 	self.SoundGroup.Name = LibraryName
 	self.SoundGroup.Parent = SoundService
 	self.SoundGroup.Volume = 1
 
-	for Iteration, Table in pairs(self.Library) do
+	for Iteration, Table in pairs(self.SoundTable) do
 		if Table.AssetId and typeof(Table.AssetId) == "number" then
 			CreateSoundInstanceAndParent(Table.AssetId, Table.SoundName, self.SoundGroup)
 		end
