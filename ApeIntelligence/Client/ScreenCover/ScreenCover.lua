@@ -26,7 +26,7 @@ function ScreenCover.new(ScreenGui)
 
 	self.Frame.Parent = ScreenGui
 
-	self.Maid:GiveTask(self.Frame)
+	self.Maid:GiveTask(ScreenGui)
 
 	return setmetatable(self, ScreenCover)
 end
