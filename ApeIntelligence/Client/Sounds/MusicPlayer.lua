@@ -11,7 +11,6 @@ MusicPlayer.ClassName = "MusicPlayer"
 
 function MusicPlayer.new(Library)
 	return setmetatable({
-		Library = Library;
 		RollOff = 1;
 
 		SoundLibrary = SoundService.CreateSoundLibrary(Library)
@@ -21,7 +20,7 @@ end
 function MusicPlayer:PlayRandomMusic(LibName)
 	if not self.SoundLibrary[LibName] then return end
 
-	local RandomizedLib = table.shuffle(self.SoundLibrary[LibName].Library)
+	local RandomizedLib = table.shuffle(self.SoundLibrary[LibName].SoundTable)
 
 	local Wrap = coroutine.wrap(function()
 		while Player do
