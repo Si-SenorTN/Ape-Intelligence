@@ -38,7 +38,7 @@ local Maid = require("Maid")
  ```
 and a few other methods provided in the link above
 
-See [Here](https://github.com/Quenty/NevermoreEngine/blob/version2/loader/ReplicatedStorage/Nevermore/README.md)
+or see [Here](https://github.com/Quenty/NevermoreEngine/blob/version2/loader/ReplicatedStorage/Nevermore/README.md)
 
 ---
 Further documentation is located in the main ApeIntelligence module
