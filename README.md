@@ -43,9 +43,9 @@ See [Here](https://github.com/Quenty/NevermoreEngine/blob/version2/loader/Replic
 ---
 Further documentation is located in the main ApeIntelligence module
 
-## Business Inquiries
+## Contact Me
 **Email** (senorsucksatdeveloping123@gmail.com)
 
-**Discord** (Si_SenorTN#0232)
+**Discord** (Si_SenorTN#0232) *prefered method*
 
 > NOTE: This repository is mainly used as an archive, rather than a resource.
