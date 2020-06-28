@@ -7,7 +7,7 @@
 </div>
 
 ## About
-Ape Intelligence is vast evergrowing module library I use in my everyday workflow. Most of these moduels are independant, however, some of them require more knowledge of specific use cases in order to understand them.
+Ape Intelligence is vast evergrowing module library I use in my everyday workflow. Most of these modules are independant, however, some of them require more knowledge of specific use cases in order to understand them.
 Everyone is free to take and use the source code of these modules as they like, I hope you enjoy.
 
 ## Usage
