@@ -33,6 +33,15 @@ local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIn
 ```lua
 local Maid = require("Maid")
 ```
+
+ - Or by directly indexing it
+ ```lua
+ local Snackbar = require.Snackbar
+ ```
+and a few other methods provided in the link above
+
+See [Here](https://github.com/Quenty/NevermoreEngine/blob/version2/loader/ReplicatedStorage/Nevermore/README.md)
+
 ---
 Further documentation is located in the main ApeIntelligence module
 
