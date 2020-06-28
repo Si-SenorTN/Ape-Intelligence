@@ -18,7 +18,7 @@ I've provided an rbxm file in the main directory. It is important you reparent/u
 
 - Redefine the roblox global requrie
 ```lua
-local requrie = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
+local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
 ```
 
 - Now you are able to requrie modules by name
