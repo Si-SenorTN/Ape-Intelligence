@@ -7,7 +7,7 @@ local table = require("Table")
 
 local MusicPlayer = {}
 MusicPlayer.__index = MusicPlayer
-MusicPlayer.ClassName = "MusicLib"
+MusicPlayer.ClassName = "MusicPlayer"
 
 function MusicPlayer.new(Library)
 	return setmetatable({
