@@ -130,7 +130,7 @@ function KeybindMenu.new(Gui, KeybindMap)
 	return self
 end
 
-function KeybindMenu:Disable()
+function KeybindMenu:Destroy()
 	self.Maid:DoCleaning()
 end
 
