@@ -50,6 +50,13 @@ function ScreenCover:ShowScreen(Speed, Yield)
 	if Yield then TweenOut.Completed:Wait() end
 end
 
+function ScreenCover:FreenHand(Amount, Speed, Yield)
+	local Info = TweenInfo.new(Speed, Enum.EasingStyle.Linear)
+	local TweenOut = TweenService:Create(self.Frame, Info, {BackgroundTransparency = Amount})
+	TweenOut:Play()
+	if Yield then TweenOut.Completed:Wait() end
+end
+
 function ScreenCover:Destroy()
 	self.Maid:DoCleaning()
 end
