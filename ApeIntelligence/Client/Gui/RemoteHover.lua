@@ -25,17 +25,17 @@ function RemoteHover.new(Base, TweenProperties, BaseToTween)
 	assert(typeof(Base) == "Instance" and typeof(BaseToTween) == "Instance")
 	assert(Base:IsA("GuiBase") and BaseToTween:IsA("GuiBase"))
 	assert(typeof(TweenProperties) == "table")
-	
+
 	local self = setmetatable({}, RemoteHover)
 	self.Maid = Maid.new()
-	
+
 	self.Base = Base
 	self.BaseToTween = BaseToTween
 	self.Activated = false
-	
+
 	self.TweenIn = TweenService:Create(BaseToTween, TweenProperties.Info, TweenProperties.FinishedProperties)
 	self.TweenOut = TweenService:Create(BaseToTween, TweenProperties.Info, TweenProperties.BaseProperties)
-	
+
 	local InTable, OutTable = {}, {}
 	if TweenProperties["PossibleChildren"] then
 		InTable, OutTable = CheckDesc(self.BaseToTween, TweenProperties.PossibleChildren, TweenProperties.Info)
