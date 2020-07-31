@@ -2,6 +2,9 @@ local TweenService = game:GetService("TweenService")
 local SoundService = game:GetService("SoundService")
 local Debris = game:GetService("Debris")
 
+local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
+local Maid = require("Maid")
+
 local ButtonBase = {}
 ButtonBase.__index = ButtonBase
 ButtonBase.ClassName = "ButtonBase"
@@ -31,14 +34,16 @@ end
 
 function ButtonBase.new(instance, Properties, Info, Callback)
 	assert(typeof(instance) == "Instance" and instance:IsA("GuiBase"))
-	assert(typeof(Properties) == "table")
+	assert(type(Properties) == "table")
 	assert(typeof(Info) == "TweenInfo")
 
 	if Callback then
-		assert(typeof(Callback) == "function")
+		assert(type(Callback) == "function")
 	end
 
 	local self = setmetatable({}, ButtonBase)
+
+	self.Maid = Maid.new()
 
 	self.Base = instance
 	self.Properties = Properties
@@ -107,12 +112,12 @@ function ButtonBase:RunCallback(Silent)
 	end
 end
 
-function ButtonBase:Activate()
-	self.Connections["Enter"] = self.Base.MouseEnter:Connect(function()
+function ButtonBase:ConnectHovers()
+	self.Maid.Enter = self.Base.MouseEnter:Connect(function()
 		self:OnMouseEnter()
 	end)
 
-	self.Connections["Leave"] = self.Base.MouseLeave:Connect(function()
+	self.Maid.Leave = self.Base.MouseLeave:Connect(function()
 		self:OnMouseLeave()
 	end)
 end
@@ -120,17 +125,20 @@ end
 function ButtonBase:ConnectActivation()
 	if not self.Base:IsA("GuiButton") then return end
 
-	self.Connections["Activated"] = self.Base.Activated:Connect(function()
+	self.Maid.Activated = self.Base.Activated:Connect(function()
 		self:RunCallback()
 	end)
 end
 
+function ButtonBase:Setup()
+	self:Deactivate()
+
+	self:ConnectHovers()
+	self:ConnectActivation()
+end
+
 function ButtonBase:Deactivate()
-	for _, Connection in pairs(self.Connections) do
-		if typeof(Connection) == "RBXScriptConnection" then
-			Connection:Disconnect()
-		end
-	end
+	self.Maid:DoCleaning()
 	self.Selected = false
 	self:OnMouseLeave()
 end
