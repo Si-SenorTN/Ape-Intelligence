@@ -41,7 +41,7 @@ function ButtonGroups:HandleGroup()
 	self:Disable() -- clean everything
 
 	for _, ButtonBase in pairs(self.Buttons) do
-		ButtonBase:Activate()
+		ButtonBase:ConnectHovers()
 
 		self.ConnectionMaid:GiveTask(ButtonBase.Base.Activated:Connect(function()
 			ButtonBase:RunCallback()
