@@ -91,7 +91,7 @@ function ButtonGroups:CreateAndAddButton(instance, Properties, Info, Callback)
 	self:HandleGroup()
 end
 
-function ButtonGroups:ConnectToChangeSignal(Value, func)
+function ButtonGroups:ConnectToChangeSignal(func)
 	assert(typeof(func) == "function")
 	self.SelectionChange:Connect(func)
 end
