@@ -1,15 +1,15 @@
 local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
-local Maid = require("Maid")
 local ButtonBase = require("ButtonBase")
 local Signal = require("Signal")
 local table = require("Table")
+local Maid = require("Maid")
 
 local ButtonGroups = {}
 ButtonGroups.__index = ButtonGroups
 ButtonGroups.ClassName = "ButtonGroup"
 
 function ButtonGroups.new()
-	local self = {}
+	local self = setmetatable({}, ButtonGroups)
 
 	self.MainMaid = Maid.new()
 	self.ConnectionMaid = Maid.new()
@@ -34,7 +34,7 @@ function ButtonGroups.new()
 		end
 	end)
 
-	return setmetatable(self, ButtonGroups)
+	return self
 end
 
 function ButtonGroups:HandleGroup()
@@ -78,7 +78,7 @@ function ButtonGroups:ManualSelect(Base)
 end
 
 function ButtonGroups:AddButtonToGroup(ButtonBase)
-	assert(ButtonBase.ClassName == "ButtonBase")
+	assert(type(ButtonBase) == "table" and ButtonBase.ClassName == "ButtonBase")
 	table.insert(self.Buttons, ButtonBase)
 	self.MainMaid:GiveTask(ButtonBase.Base)
 	self:HandleGroup()
