@@ -61,10 +61,6 @@ function Maid:GiveTask(Task)
 	local TrashId = #self._Trash + 1
 	self[TrashId] = Task
 
-	if type(Task) == "table" and not Task.Destroy then
-		warn("Gave Maid table type task with no destroy function /n", debug.traceback())
-	end
-
 	return TrashId
 end
 
@@ -110,14 +106,14 @@ function Maid:DoCleaning()
 	--\* they will be added to the que
 	local Key, Trash = next(Garbage)
 	while Trash ~= nil do
-		Garbage[Key] = nil
+		rawset(Garbage, Key, nil)
 		MaidUtil:DoTask(Trash)
 
 		Key, Trash = next(Garbage)
 	end
 end
 
---\* Alias/Deprecated Methods*\--
+--\* Alias Methods*\--
 --\* Destroy
 Maid.Destroy = Maid.DoCleaning
 
