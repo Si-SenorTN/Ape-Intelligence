@@ -1,12 +1,12 @@
---\* Snackbar Class *\--
---\* Creates a visual Snackbar at the bottom corner of the screen
---\* Disappears after timeout
---\* There can only be one snackbar on screen at a time
 --[[
-	Calling one snackbar will not pause the thread, unless multiple snackbars
-	are created. The que will pause any incomming :CreateSnackbar()'s until que
-	is cleared (TO DO: This may cause unwanted/unpredictable behavior, need to
-	find a better way to not yield any threads for this)
+	-- Snackbar Class
+	-- Creates a visual Snackbar at the bottom corner of the screen
+	-- Disappears after timeout
+	-- There can only be one snackbar on screen at a time
+
+	Calling one snackbar will not pause the thread. The que will 
+	pause any incomming Snackbars's until the que ahead of it is
+	cleared.
 --]]
 
 local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
@@ -25,6 +25,11 @@ if not SnackTray then
 	SnackTray.Parent = PlayerGui
 end
 
+local Singleton = {}
+Singleton.QueChange = Signal.new()
+Singleton.PlayingQue = false
+Singleton.Que = {}
+
 local SnackBar = {}
 SnackBar.__index = SnackBar
 SnackBar.ClassName = "SnackBar"
@@ -35,22 +40,12 @@ SnackBar.TextWidthOffset = 24
 SnackBar.Position = UDim2.new(1, -10, 1, -10 - SnackBar.Height)
 SnackBar.FadeTime = .16
 
-SnackBar.QueChange = Signal.new()
-SnackBar.Que = {}
-
 -- use off colors(more appealing to the eyes)
 SnackBar.DarkTheme = Color3.fromRGB(20, 20, 20)
 SnackBar.LightTheme = Color3.fromRGB(249, 249, 249)
 
 function SnackBar:CreateSnackbar(Text, Theme, Timeout)
-	if #SnackBar.Que > 0 then
-		-- we'll throw away what it returns bc its not necessary here
-		-- if you want to connect to the que change event, thats fine
-		SnackBar.QueChange:Wait()
-	end
-
-	local self = {}
-	setmetatable(self, SnackBar)
+	local self = setmetatable({}, SnackBar)
 
 	self.Maid = Maid.new()
 
@@ -65,7 +60,6 @@ function SnackBar:CreateSnackbar(Text, Theme, Timeout)
 	Container.ClipsDescendants = true
 	Container.ZIndex = 10
 	self.Gui = Container
-	self.Gui.Parent = SnackTray
 
 	local Label = Instance.new("TextLabel")
 	Label.BackgroundTransparency = 1
@@ -102,20 +96,25 @@ function SnackBar:CreateSnackbar(Text, Theme, Timeout)
 	FadeBar.Position = UDim2.new(0, 0, 1, 0)
 
 	local Info = TweenInfo.new(Timeout or 3, Enum.EasingStyle.Linear)
-	local Tween = TweenService:Create(FadeBar, Info, {Size = UDim2.fromScale(0, FadeBar.Size.Y.Scale)})
+	self.Tween = TweenService:Create(FadeBar, Info, {Size = UDim2.fromScale(0, FadeBar.Size.Y.Scale)})
 
-	self.Maid:GiveTask(self.Gui)
-	self.Maid:GiveTask(Tween.Completed:Connect(function()
-		local Find = table.find(SnackBar.Que, self.Gui)
-		if Find then table.remove(SnackBar.Que, Find) end
+	table.insert(Singleton.Que, self)
 
-		SnackBar.QueChange:Fire(#SnackBar.Que, tick()) -- returns the current length off the que, and the time it fired
-		FadeSnackbar(self.Gui, .2)
-		self.Maid:DoCleaning()
-	end))
+	spawn(RenderQue)
+end
 
-	Tween:Play()
-	table.insert(SnackBar.Que, self.Gui)
+function RenderQue()
+	if Singleton.PlayingQue then return end
+	Singleton.PlayingQue = true
+
+	for _, Snackbars in pairs(Singleton.Que) do
+		Snackbars.Gui.Parent = SnackTray
+		Snackbars.Tween:Play()
+
+		Snackbars.Tween.Completed:Wait()
+		Singleton.QueChange:Fire(Snackbars)
+	end
+	Singleton.PlayingQue = false
 end
 
 function FadeSnackbar(SnackbarGui, Speed, Properties)
@@ -143,5 +142,15 @@ function FadeSnackbar(SnackbarGui, Speed, Properties)
 	Tween:Play()
 	Tween.Completed:Wait()
 end
+
+Singleton.QueChange:Connect(function(Snackbar)
+	local Find = table.find(Singleton.Que, Snackbar)
+
+	if Find then
+		table.remove(Singleton.Que, Find)
+		FadeSnackbar(Snackbar.Gui, .2)
+		Snackbar.Maid:DoCleaning()
+	end
+end)
 
 return SnackBar
