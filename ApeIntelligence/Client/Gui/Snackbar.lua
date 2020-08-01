@@ -100,7 +100,7 @@ function SnackBar:CreateSnackbar(Text, Theme, Timeout)
 
 	table.insert(Singleton.Que, self)
 
-	spawn(RenderQue)
+	coroutine.wrap(RenderQue)()
 end
 
 function RenderQue()
