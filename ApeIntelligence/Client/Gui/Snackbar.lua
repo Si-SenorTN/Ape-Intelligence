@@ -15,6 +15,7 @@ local TweenService = game:GetService("TweenService")
 local Maid = require("Maid")
 local Signal = require("Signal")
 local PlayerGui = require("PlayerGui").GetPlayerGui()
+local Bootstrap = require("BootstrapPalette")
 
 local SnackTray = PlayerGui:WaitForChild("SnackTray", 4)
 -- we'll wait a little bit for the snack tray, if its not there we'll make one
@@ -44,7 +45,15 @@ SnackBar.FadeTime = .16
 SnackBar.DarkTheme = Color3.fromRGB(20, 20, 20)
 SnackBar.LightTheme = Color3.fromRGB(249, 249, 249)
 
-function SnackBar:CreateSnackbar(Text, Theme, Timeout)
+function SnackBar:CreateSnackbar(Text, Theme, Timeout, TextStyle)
+	if TextStyle and Bootstrap[TextStyle] then
+		TextStyle = Bootstrap[TextStyle].RGB
+	elseif TextStyle then
+		TextStyle = Bootstrap.White.RGB
+	else
+		TextStyle = Theme == "Light" and self.DarkTheme or self.LightTheme
+	end
+
 	local self = setmetatable({}, SnackBar)
 
 	self.Maid = Maid.new()
@@ -68,7 +77,7 @@ function SnackBar:CreateSnackbar(Text, Theme, Timeout)
 	Label.TextXAlignment = Enum.TextXAlignment.Left
 	Label.TextYAlignment = Enum.TextYAlignment.Center
 	Label.Name = "SnackbarLabel"
-	Label.TextColor3 = Theme == "Light" and self.DarkTheme or self.LightTheme -- opposites attract
+	Label.TextColor3 = TextStyle
 	Label.Font = Enum.Font.SourceSansBold
 	Label.Text = Text
 	Label.TextScaled = true
@@ -106,13 +115,16 @@ end
 function RenderQue()
 	if Singleton.PlayingQue then return end
 	Singleton.PlayingQue = true
-
-	for _, Snackbars in pairs(Singleton.Que) do
+	
+	local _, Snackbars = next(Singleton.Que)
+	while Snackbars do
 		Snackbars.Gui.Parent = SnackTray
 		Snackbars.Tween:Play()
 
 		Snackbars.Tween.Completed:Wait()
 		Singleton.QueChange:Fire(Snackbars)
+
+		_, Snackbars = next(Singleton.Que)
 	end
 	Singleton.PlayingQue = false
 end
