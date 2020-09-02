@@ -9,7 +9,7 @@ local Maid = require("Maid")
 
 local Signal = {}
 Signal.__index = Signal
-Signal.ClassName = Signal
+Signal.ClassName = "Signal"
 
 function Signal.new()
 	local self = {}
