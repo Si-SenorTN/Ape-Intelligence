@@ -1,0 +1,7 @@
+## Literals
+# ignore the assets directory
+/Assets
+
+## Wildcard file extensions
+*.json
+*.toml
