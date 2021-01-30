@@ -1,6 +1,6 @@
-local ApeUtils = {}
+local ReplicationUtility = {}
 
-function ApeUtils.RequireByName(Require, Lookup)
+function ReplicationUtility.RequireByName(Require, Lookup)
 	assert(type(Require) == "function")
 	assert(type(Lookup) == "table")
 
@@ -14,12 +14,12 @@ function ApeUtils.RequireByName(Require, Lookup)
 				error("Module: "..Module.." doesnt exist within ApeIntelligence", 2)
 			end
 		else
-			error(string.format("Module must be a string or ModuleScript, Got %s for %s", typeof(Module), tostring("Module")))
+			error(string.format("Module must be a string or ModuleScript, Got %s for %s", typeof(Module), tostring(Module)))
 		end
 	end
 end
 
-function ApeUtils.DetectCyclicalPatterns(Require)
+function ReplicationUtility.DetectCyclicalPatterns(Require)
 	assert(type(Require) == "function")
 
 	local Stack = {}
@@ -29,7 +29,7 @@ function ApeUtils.DetectCyclicalPatterns(Require)
 		assert(typeof(Module) == "Instance")
 
 		if Loading[Module] then
-			local Cycle = ApeUtils.GetCyclicalFromStack(Stack, Loading[Module])
+			local Cycle = ReplicationUtility.GetCyclicalFromStack(Stack, Loading[Module])
 			warn(string.format("CyclicalPattern detected at %q.\nCycle: %s", Module:GetFullName(), Cycle))
 			return Require(Module)
 		end
@@ -46,7 +46,7 @@ function ApeUtils.DetectCyclicalPatterns(Require)
 	end
 end
 
-function ApeUtils.GetCyclicalFromStack(Stack, Depth)
+function ReplicationUtility.GetCyclicalFromStack(Stack, Depth)
 	local string = ""
 
 	for i = Depth, #Stack do
@@ -55,4 +55,4 @@ function ApeUtils.GetCyclicalFromStack(Stack, Depth)
 	return string..Stack[Depth].Name
 end
 
-return ApeUtils
+return ReplicationUtility

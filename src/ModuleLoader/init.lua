@@ -33,18 +33,18 @@ local ReplicationFolderName = "ReplicationFolder"
 local ServerTimeOut = 5
 local ClientTimeOut = ServerTimeOut
 
-local ApeReplication = require(script.ApeReplicate)
-local VineSwinger = require(script.VineSwinger)
+local Replication = require(script.Replication)
+local ModuleLoader = require(script.ModuleLoader)
 
 if RunService:IsServer() and RunService:IsClient() or not RunService:IsRunning() then
 	if RunService:IsRunning() then
 		warn("Loading modules in PlaySolo, it is reccomended you use accurate PlaySolo")
 	end
 
-	local Loader = VineSwinger.new({
-		ApeReplication.ScriptType.Shared;
-		ApeReplication.ScriptType.Client;
-		ApeReplication.ScriptType.Server;
+	local Loader = ModuleLoader.new({
+		Replication.ScriptType.Shared;
+		Replication.ScriptType.Client;
+		Replication.ScriptType.Server;
 	})
 
 	if ServerScriptServiceModules then
@@ -57,16 +57,16 @@ if RunService:IsServer() and RunService:IsClient() or not RunService:IsRunning()
 
 	return Loader
 elseif RunService:IsServer() then
-	local ReplicationFolder = ApeReplication.CreateReplicationFolder(ReplicationFolderName)
+	local ReplicationFolder = Replication.CreateReplicationFolder(ReplicationFolderName)
 
-	local Loader = VineSwinger.new(
+	local Loader = ModuleLoader.new(
 	{
-		ApeReplication.ScriptType.Server;
-		ApeReplication.ScriptType.Shared;
+		Replication.ScriptType.Server;
+		Replication.ScriptType.Shared;
 	},
 	{
-		[ApeReplication.ScriptType.Client] = ReplicationFolder;
-		[ApeReplication.ScriptType.Shared] = ReplicationFolder;
+		[Replication.ScriptType.Client] = ReplicationFolder;
+		[Replication.ScriptType.Shared] = ReplicationFolder;
 	})
 
 	if ServerScriptServiceModules then
@@ -79,9 +79,9 @@ elseif RunService:IsServer() then
 
 	return Loader
 elseif RunService:IsClient() then
-	local Loader = VineSwinger.new({
-		ApeReplication.ScriptType.Shared;
-		ApeReplication.ScriptType.Client;
+	local Loader = ModuleLoader.new({
+		Replication.ScriptType.Shared;
+		Replication.ScriptType.Client;
 	})
 
 	local ReplicationFolder = ReplicatedStorage:WaitForChild(ReplicationFolderName, ClientTimeOut)

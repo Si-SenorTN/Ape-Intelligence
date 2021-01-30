@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local ApeReplicate = {}
+local Replication = {}
 
 function ReadOnlyTable(table)
 	return setmetatable(table, {
@@ -14,11 +14,11 @@ function ReadOnlyTable(table)
 	})
 end
 
-function ApeReplicate.ClassifyModuleScriptType(Module, Ancestor)
+function Replication.ClassifyModuleScriptType(Module, Ancestor)
 	if Ancestor then
 		local FirstParent = Module:FindFirstAncestorWhichIsA("ModuleScript")
 		if FirstParent and FirstParent:IsDescendantOf(Ancestor) then
-			return ApeReplicate.ScriptType.SubModule
+			return Replication.ScriptType.SubModule
 		end
 	end
 
@@ -26,17 +26,17 @@ function ApeReplicate.ClassifyModuleScriptType(Module, Ancestor)
 	while Parent and Parent ~= Ancestor do
 		local ParentName = Parent.Name
 		if ParentName == "Server" then
-			return ApeReplicate.ScriptType.Server
+			return Replication.ScriptType.Server
 		elseif ParentName == "Client" then
-			return ApeReplicate.ScriptType.Client
+			return Replication.ScriptType.Client
 		end
 		Parent = Parent.Parent
 	end
 
-	return ApeReplicate.ScriptType.Shared
+	return Replication.ScriptType.Shared
 end
 
-function ApeReplicate.ReparentModulesByScriptType(Map, Type, Parent)
+function Replication.ReparentModulesByScriptType(Map, Type, Parent)
 	assert(type(Map) == "table")
 	assert(type(Type) == "string")
 	assert(typeof(Parent) == "Instance")
@@ -46,18 +46,18 @@ function ApeReplicate.ReparentModulesByScriptType(Map, Type, Parent)
 	end
 end
 
-function ApeReplicate.GetMapForParent(Parent)
+function Replication.GetMapForParent(Parent)
 	assert(typeof(Parent) == "Instance")
 	local Map = {
-		[ApeReplicate.ScriptType.Shared] = {};
-		[ApeReplicate.ScriptType.Client] = {};
-		[ApeReplicate.ScriptType.Server] = {};
-		[ApeReplicate.ScriptType.SubModule] = {};
+		[Replication.ScriptType.Shared] = {};
+		[Replication.ScriptType.Client] = {};
+		[Replication.ScriptType.Server] = {};
+		[Replication.ScriptType.SubModule] = {};
 	}
 
 	for _, Descendant in pairs(Parent:GetDescendants()) do
 		if Descendant:IsA("ModuleScript") then
-			local ScriptType = ApeReplicate.ClassifyModuleScriptType(Descendant, Parent)
+			local ScriptType = Replication.ClassifyModuleScriptType(Descendant, Parent)
 			table.insert(Map[ScriptType], Descendant)
 		end
 	end
@@ -65,7 +65,7 @@ function ApeReplicate.GetMapForParent(Parent)
 	return Map
 end
 
-function ApeReplicate.MergeModuleIntoLookupTable(Module, Lookup)
+function Replication.MergeModuleIntoLookupTable(Module, Lookup)
 	if Lookup[Module.Name] then
 		warn("Duplicate of ", Module.Name, " found, using first one found")
 	else
@@ -73,22 +73,22 @@ function ApeReplicate.MergeModuleIntoLookupTable(Module, Lookup)
 	end
 end
 
-function ApeReplicate.MergeMapIntoLookupTable(Lookup, Map, AcceptedModes)
+function Replication.MergeMapIntoLookupTable(Lookup, Map, AcceptedModes)
 	for _, ScriptType in pairs(AcceptedModes) do
 		for _, Module in pairs(Map[ScriptType]) do
-			ApeReplicate.MergeModuleIntoLookupTable(Module, Lookup)
+			Replication.MergeModuleIntoLookupTable(Module, Lookup)
 		end
 	end
 end
 
-ApeReplicate.ScriptType = ReadOnlyTable({
+Replication.ScriptType = ReadOnlyTable({
 	Shared = "Shared";
 	Client = "Client";
 	Server = "Server";
 	SubModule = "SubModule";
 })
 
-function ApeReplicate.IsInTable(table, Value)
+function Replication.IsInTable(table, Value)
 	assert(type(table) == "table")
 	assert(Value, "Must pass in a value to check for")
 
@@ -100,7 +100,7 @@ function ApeReplicate.IsInTable(table, Value)
 	return false
 end
 
-function ApeReplicate.CreateReplicationFolder(Name)
+function Replication.CreateReplicationFolder(Name)
 	assert(type(Name) == "string")
 	local CheckReplicated = ReplicatedStorage:FindFirstChild(Name)
 	if CheckReplicated and CheckReplicated:IsA("Folder") then
@@ -120,4 +120,4 @@ function ApeReplicate.CreateReplicationFolder(Name)
 	return ReplicationFolder
 end
 
-return ApeReplicate
+return Replication
