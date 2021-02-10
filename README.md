@@ -19,10 +19,6 @@ Ape Intelligence is vast evergrowing module library I use in my everyday workflo
 Everyone is free to take and use the source code of these modules as they like, I hope you enjoy.
 
 ## Usage
-I've provided an rbxm file in the main directory. It is important you reparent/ungroup the contents in their respective services
-
----
-<h3 align="center"> General usage is as follows </h3>
 
 - Redefine the roblox global requrie
 ```lua
