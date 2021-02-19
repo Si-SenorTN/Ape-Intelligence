@@ -5,9 +5,6 @@ local require = require(ReplicatedStorage:WaitForChild("ApeIntelligence"))
 local SoundDirectory = require("SoundDirectory")
 local Maid = require("Maid")
 
-local MenuSounds = SoundDirectory.new(ReplicatedStorage.Assets.Sounds)
-	:GetDirectory("Master"):GetSubSlot("Interface"):GetSubSlot("MenuInteractables")
-
 local ButtonBase = {}
 ButtonBase.__index = ButtonBase
 ButtonBase.ClassName = "ButtonBase"
@@ -67,7 +64,7 @@ function ButtonBase:OnMouseEnter(Silent)
 	if self.Selected then return end
 
 	if self.Properties["HoverSound"] and not Silent then
-		MenuSounds:Play("MenuHover")
+		--MenuSounds:Play("MenuHover")
 	end
 
 	self.TweenIn:Play()
@@ -97,7 +94,7 @@ function ButtonBase:RunCallback(Silent)
 	if self.Selected then return end
 
 	if self.Properties["ClickSound"] and not Silent then
-		MenuSounds:Play("MenuClick")
+		--MenuSounds:Play("MenuClick")
 	end
 
 	if self.Callback then
