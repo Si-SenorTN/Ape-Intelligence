@@ -53,22 +53,18 @@ function RemoteHover:Enable()
 	self.Activated = true
 	self.Maid:GiveTask(self.Base.MouseEnter:Connect(function()
 		self.TweenIn:Play()
-		if #self.ChildInTable > 0 then
-			for _, TweenBase in pairs(self.ChildInTable) do
-				if TweenBase:IsA("TweenBase") then
-					TweenBase:Play()
-				end
+		for _, TweenBase in pairs(self.ChildInTable) do
+			if TweenBase:IsA("TweenBase") then
+				TweenBase:Play()
 			end
 		end
 	end))
 
 	self.Maid:GiveTask(self.Base.MouseLeave:Connect(function()
 		self.TweenOut:Play()
-		if #self.ChildOutTable > 0 then
-			for _, TweenBase in pairs(self.ChildOutTable) do
-				if TweenBase:IsA("TweenBase") then
-					TweenBase:Play()
-				end
+		for _, TweenBase in pairs(self.ChildOutTable) do
+			if TweenBase:IsA("TweenBase") then
+				TweenBase:Play()
 			end
 		end
 	end))
