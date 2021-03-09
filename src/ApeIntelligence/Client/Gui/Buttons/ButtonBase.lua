@@ -1,8 +1,8 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
+local SoundService = game:GetService("SoundService")
+local Debris = game:GetService("Debris")
 
-local require = require(ReplicatedStorage:WaitForChild("ApeIntelligence"))
-local SoundDirectory = require("SoundDirectory")
+local require = require(game:GetService("ReplicatedStorage"):WaitForChild("ApeIntelligence"))
 local Maid = require("Maid")
 
 local ButtonBase = {}
@@ -22,6 +22,14 @@ local function CheckDesc(Base, Index, Info)
 		end
 	end
 	return TweenInTable, TweenOutTable
+end
+
+local function PlayInteractiveSound(SoundId, Volume)
+	local Sound = Instance.new("Sound")
+	Sound.SoundId = "rbxassetid://"..SoundId
+	Sound.Volume = Volume
+	SoundService:PlayLocalSound(Sound)
+	Debris:AddItem(Sound, Sound.TimeLength + .8)
 end
 
 function ButtonBase.new(instance, Properties, Info, Callback)
@@ -64,7 +72,8 @@ function ButtonBase:OnMouseEnter(Silent)
 	if self.Selected then return end
 
 	if self.Properties["HoverSound"] and not Silent then
-		--MenuSounds:Play("MenuHover")
+		local Sound = self.Properties.HoverSound
+		PlayInteractiveSound(Sound.SoundId, Sound.Volume)
 	end
 
 	self.TweenIn:Play()
@@ -92,9 +101,10 @@ end
 
 function ButtonBase:RunCallback(Silent)
 	if self.Selected then return end
-
+	
 	if self.Properties["ClickSound"] and not Silent then
-		--MenuSounds:Play("MenuClick")
+		local Sound = self.Properties.ClickSound
+		PlayInteractiveSound(Sound.SoundId, Sound.Volume)
 	end
 
 	if self.Callback then
@@ -126,7 +136,7 @@ end
 
 function ButtonBase:Setup()
 	self:Deactivate()
-
+	
 	self:ConnectHovers()
 	self:ConnectActivation()
 end
